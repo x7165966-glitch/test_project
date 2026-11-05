@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Psy\Readline\Interactive\Actions\InsertCloseBracketAction;
+use Illuminate\Support\Facades\DB;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -31,3 +34,15 @@ return view('about',compact ('name', 'departments'));
 
 });
 
+route::get('tasks',function(){
+
+return view('tasks');
+
+});
+
+route:: post('create',function(){
+
+$task_name = $_POST['name'];
+DB::table('tasks')->insert(["name"=> $task_name]);
+return view ('tasks');
+});
