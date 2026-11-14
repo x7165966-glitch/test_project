@@ -35,8 +35,9 @@ return view('about',compact ('name', 'departments'));
 });
 
 route::get('tasks',function(){
+    $tasks=DB::table('tasks')-> get();
 
-return view('tasks');
+return view('tasks' , compact('tasks') );
 
 });
 
@@ -44,5 +45,31 @@ route:: post('create',function(){
 
 $task_name = $_POST['name'];
 DB::table('tasks')->insert(["name"=> $task_name]);
-return view ('tasks');
+return redirect()->back();
+});
+
+route::post('delete/{id}',function($id){
+
+DB::table('tasks')->where('id' , $id)->delete();
+
+
+return redirect()->back();
+});
+
+route::post('edit/{id}',function($id){
+
+$task= DB::table('tasks')->where('id',$id)->first();
+ $tasks = DB::table('tasks')->get();
+return view ('tasks' , compact('task','tasks'));
+
+});
+
+Route::post('update/{id}', function ($id) {
+    $task_name = $_POST['name'];
+
+    DB::table('tasks')
+        ->where('id', $id)
+        ->update(['name' => $task_name]);
+
+    return redirect('/tasks');
 });
